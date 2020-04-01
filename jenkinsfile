@@ -22,7 +22,7 @@ pipeline {
 		
 		stage('Backup-script') {
 		    steps {
-			     sh  """sudo su - jenkins -c 'cd ${WORKDIR_CMD}/jenkinsbackup/;chmod 775 backup.sh;${WORKDIR_CMD}/jenkinsbackup/backup.sh'"""
+			     sh  """sudo su - jenkins -c 'cd ${WORKDIR_CMD};chmod 775 backup.sh;${WORKDIR_CMD}/backup.sh'"""
 			}
 	         }
 	         
