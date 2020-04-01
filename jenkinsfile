@@ -1,0 +1,47 @@
+pipeline {
+    agent {
+	    node {label 'master'}
+    }
+	
+	#parameters {
+		#choice (name: 'Action', choices: ['enable', 'disable', 'status'], description: 'Select particular option for rsync job')
+	#}
+	
+	environment {
+		ENV  =  "${params.environment}"
+		#ACTION = "${params.Action}"
+		WORKDIR_CMD = '/var/lib/jenkins/workspace/jenkinsbackup'
+	}
+	
+	stages {
+	    stage('checkout-repo') {
+	       steps {
+				checkout scm
+		   }
+		}
+		
+		stage('Backup-script') {
+		    steps {
+			     sh  """sudo su - jenkins -c 'cd ${WORKDIR_CMD}/jenkinsbackup/; backup.sh'"""
+			}
+	         }
+	         
+	}
+	
+	#post {
+#	   
+		#success {
+		#	echo "This is successful backup"
+		#	slackSend channel: '#dotcomctlinfra',
+		#	          color: 'good',
+		#			  message: "Job ${env.JOB_NAME} Build# ${env.BUILD_NUMBER}\nMore Info: ${env.BUILD_URL}"
+		#}
+		#
+		#failure {
+		#	echo "Failed Build"
+		#	slackSend channel: '#dotcomctlinfra',
+		#			  color: '#FF9FA1',
+		#			  message: "Job ${env.JOB_NAME} Build# ${env.BUILD_NUMBER}\n Check it asap: ${env.BUILD_URL}"
+		#}
+     #     }
+#}
